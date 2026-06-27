@@ -59,7 +59,7 @@ export default function WishlistPage() {
           <Heart className="w-12 h-12 text-rose-300 mx-auto mb-4" />
           <h2 className="font-serif text-xl font-semibold text-brand-dark">Your Wishlist is Empty</h2>
           <p className="text-xs text-gray-400 mt-2 max-w-sm mx-auto leading-relaxed">
-            Save your favorite sarees to your wishlist to check out later or share with family.
+            Save your favorite items to your wishlist to check out later or share with family.
           </p>
           <Link
             href="/products"

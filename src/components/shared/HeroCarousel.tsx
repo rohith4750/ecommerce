@@ -6,28 +6,28 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   {
-    title: "Premium Ethnic Collections",
-    subtitle: "Artisanal heritage direct from the looms of Varanasi.",
+    title: "Premium Designer Wear",
+    subtitle: "Handcrafted elegance featuring high-grade silhouettes.",
     bg: "bg-gradient-to-r from-[#310A42] to-[#5E0D82]",
     textColor: "text-white",
     image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop&q=80",
-    link: "/products?type=Banarasi",
+    link: "/products",
   },
   {
-    title: "Bridal Kanjeevaram Collection",
-    subtitle: "Woven in pure zari thread for your grand moments.",
+    title: "Contemporary Couture",
+    subtitle: "Timeless patterns designed for modern luxury.",
     bg: "bg-gradient-to-r from-[#4A0E17] to-[#801322]",
     textColor: "text-white",
     image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=600&auto=format&fit=crop&q=80",
-    link: "/products?type=Kanjeevaram",
+    link: "/products",
   },
   {
-    title: "Elegant Chanderi & Cottons",
-    subtitle: "Sophisticated prints and airy drapes for regular comforts.",
+    title: "Sophisticated Loungewear",
+    subtitle: "Refined prints and casual comforts for your everyday needs.",
     bg: "bg-gradient-to-r from-[#202938] to-[#1A1A2E]",
     textColor: "text-white",
     image: "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=600&auto=format&fit=crop&q=80",
-    link: "/products?category=Cotton",
+    link: "/products",
   },
 ];
 

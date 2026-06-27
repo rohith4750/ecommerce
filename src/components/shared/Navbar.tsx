@@ -70,7 +70,7 @@ export default function Navbar() {
         {/* Brand Logo */}
         <div className="flex items-center">
           <Link href="/" className="font-serif text-3xl font-bold tracking-wider text-brand-primary transition-colors hover:text-brand-secondary">
-            SilkRoute
+            OmniStore
           </Link>
         </div>
 
@@ -86,18 +86,18 @@ export default function Navbar() {
             All Collections
           </Link>
           <Link
-            href="/products?category=Silk"
-            onClick={() => setFilter("category", "Silk")}
+            href="/products?category=Ethnic"
+            onClick={() => setFilter("category", "Ethnic")}
             className="text-gray-600 transition-colors hover:text-brand-primary"
           >
-            Pure Silks
+            Ethnic Wear
           </Link>
           <Link
-            href="/products?category=Cotton"
-            onClick={() => setFilter("category", "Cotton")}
+            href="/products?category=Casual"
+            onClick={() => setFilter("category", "Casual")}
             className="text-gray-600 transition-colors hover:text-brand-primary"
           >
-            Linen & Cottons
+            Casual Wear
           </Link>
         </nav>
 
@@ -254,24 +254,24 @@ export default function Navbar() {
             All Collections
           </Link>
           <Link
-            href="/products?category=Silk"
+            href="/products?category=Ethnic"
             onClick={() => {
-              setFilter("category", "Silk");
+              setFilter("category", "Ethnic");
               setMobileMenuOpen(false);
             }}
             className="block text-sm font-medium text-gray-700 hover:text-brand-primary"
           >
-            Pure Silks
+            Ethnic Wear
           </Link>
           <Link
-            href="/products?category=Cotton"
+            href="/products?category=Casual"
             onClick={() => {
-              setFilter("category", "Cotton");
+              setFilter("category", "Casual");
               setMobileMenuOpen(false);
             }}
             className="block text-sm font-medium text-gray-700 hover:text-brand-primary"
           >
-            Linen & Cottons
+            Casual Wear
           </Link>
 
           {!user && (

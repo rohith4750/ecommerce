@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         if (newStock < 5) {
           const adminAlertHtml = getLowStockAlertTemplate(product.name, product.sku, newStock);
           await sendEmail({
-            to: "admin@silkroute.in",
+            to: "admin@omnistore.com",
             subject: `⚠️ Low Stock Warning: ${product.name}`,
             html: adminAlertHtml,
           });
@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     }
 
     // Send customer receipt confirmation email
-    let userEmail = "customer@silkroute.in";
+    let userEmail = "customer@omnistore.com";
     if (order.userId) {
       const user = await db.user.findUnique({ where: { id: order.userId } });
       if (user) userEmail = user.email;

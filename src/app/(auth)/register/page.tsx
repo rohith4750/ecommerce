@@ -61,7 +61,7 @@ export default function RegisterPage() {
       const data = await res.json();
       if (res.ok) {
         setUser(data.user);
-        showToast("Account activated successfully! Welcome to SilkRoute.", "success");
+        showToast("Account activated successfully! Welcome to OmniStore.", "success");
         router.push("/");
       } else {
         showToast(data.error || "Invalid OTP code", "error");
@@ -79,7 +79,7 @@ export default function RegisterPage() {
         
         <div className="text-center">
           <Link href="/" className="font-serif text-3xl font-bold tracking-wider text-brand-primary">
-            SilkRoute
+            OmniStore
           </Link>
           <h2 className="mt-4 font-serif text-lg font-semibold text-brand-dark">
             {showOtpScreen ? "Verify Account" : "Create Account"}
@@ -87,7 +87,7 @@ export default function RegisterPage() {
           <p className="text-[10px] text-gray-400 mt-1">
             {showOtpScreen
               ? "Verify registration code to activate your account"
-              : "Register to explore handloom weaver saree drafts"}
+              : "Register to explore premium fashion collections"}
           </p>
         </div>
 

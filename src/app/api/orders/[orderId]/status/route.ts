@@ -46,7 +46,7 @@ export async function PATCH(
     });
 
     // Determine user email
-    let userEmail = "customer@silkroute.in";
+    let userEmail = "customer@omnistore.com";
     if (order.userId) {
       const user = await db.user.findUnique({ where: { id: order.userId } });
       if (user) userEmail = user.email;

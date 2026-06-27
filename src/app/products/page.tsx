@@ -30,6 +30,7 @@ export default function ProductsPage() {
         if (filters.category) query.append("category", filters.category);
         if (filters.type) query.append("type", filters.type);
         if (filters.color) query.append("color", filters.color);
+        if (filters.size) query.append("size", filters.size);
         if (filters.minPrice) query.append("minPrice", filters.minPrice.toString());
         if (filters.maxPrice) query.append("maxPrice", filters.maxPrice.toString());
         if (filters.searchQuery) query.append("search", filters.searchQuery);

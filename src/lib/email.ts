@@ -24,7 +24,7 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
       });
 
       const info = await transporter.sendMail({
-        from: process.env.EMAIL_FROM || "no-reply@silkroute.in",
+        from: process.env.EMAIL_FROM || "no-reply@omnistore.com",
         to,
         subject,
         html,
@@ -51,15 +51,15 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
 export function getWelcomeTemplate(name: string, otp: string) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
-      <h2 style="color: #5E0D82; text-align: center;">Welcome to SilkRoute!</h2>
+      <h2 style="color: #5E0D82; text-align: center;">Welcome to OmniStore!</h2>
       <p>Hello ${name},</p>
-      <p>Thank you for registering with SilkRoute — the premium ethnic wear destination. Please use the verification code below to activate your account:</p>
+      <p>Thank you for registering with OmniStore — the premium fashion destination. Please use the verification code below to activate your account:</p>
       <div style="background-color: #F3E8FF; text-align: center; padding: 15px; font-size: 24px; font-weight: bold; letter-spacing: 4px; color: #5E0D82; border-radius: 6px; margin: 20px 0;">
         ${otp}
       </div>
       <p>This code expires in 10 minutes. If you did not register for an account, please ignore this email.</p>
       <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-      <p style="font-size: 12px; color: #777; text-align: center;">Built with ❤️ for Indian Artisans. SilkRoute © 2026</p>
+      <p style="font-size: 12px; color: #777; text-align: center;">Built with ❤️ for Fashion Lovers. OmniStore © 2026</p>
     </div>
   `;
 }
@@ -80,7 +80,7 @@ export function getOrderPlacedTemplate(orderId: string, items: any[], totalAmoun
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px;">
       <h2 style="color: #5E0D82;">Order Placed! 🛍️</h2>
-      <p>Thank you for shopping at SilkRoute. Your order <strong>${orderId}</strong> has been successfully placed.</p>
+      <p>Thank you for shopping at OmniStore. Your order <strong>${orderId}</strong> has been successfully placed.</p>
       <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <thead>
           <tr style="background-color: #F3E8FF;">
@@ -101,7 +101,7 @@ export function getOrderPlacedTemplate(orderId: string, items: any[], totalAmoun
       </table>
       <p>We are preparing your package. You will receive another notification once your items ship.</p>
       <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-      <p style="font-size: 12px; color: #777; text-align: center;">SilkRoute © 2026 — All Rights Reserved</p>
+      <p style="font-size: 12px; color: #777; text-align: center;">OmniStore © 2026 — All Rights Reserved</p>
     </div>
   `;
 }
@@ -114,15 +114,15 @@ export function getOrderStatusUpdateTemplate(orderId: string, status: string, tr
       ${
         trackingNumber
           ? `<div style="background-color: #FAFAFA; border: 1px dashed #ddd; padding: 15px; border-radius: 6px; margin: 20px 0;">
-              <strong>Tracking Number:</strong> ${trackingNumber}<br/>
-              <strong>Courier Partner:</strong> Delhivery (Simulated)<br/>
-              <a href="#" style="color: #5E0D82; text-decoration: underline; display: inline-block; margin-top: 5px;">Track Shipment</a>
-             </div>`
+               <strong>Tracking Number:</strong> ${trackingNumber}<br/>
+               <strong>Courier Partner:</strong> Delhivery (Simulated)<br/>
+               <a href="#" style="color: #5E0D82; text-decoration: underline; display: inline-block; margin-top: 5px;">Track Shipment</a>
+              </div>`
           : ""
       }
-      <p>Thank you for choosing SilkRoute!</p>
+      <p>Thank you for choosing OmniStore!</p>
       <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-      <p style="font-size: 12px; color: #777; text-align: center;">SilkRoute © 2026 — All Rights Reserved</p>
+      <p style="font-size: 12px; color: #777; text-align: center;">OmniStore © 2026 — All Rights Reserved</p>
     </div>
   `;
 }
@@ -140,7 +140,7 @@ export function getLowStockAlertTemplate(productName: string, sku: string, stock
       </div>
       <p>Please restock this item soon or disable sales if inventory is exhausted.</p>
       <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-      <p style="font-size: 12px; color: #777; text-align: center;">SilkRoute Automated Admin System</p>
+      <p style="font-size: 12px; color: #777; text-align: center;">OmniStore Automated Admin System</p>
     </div>
   `;
 }

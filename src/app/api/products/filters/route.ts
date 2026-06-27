@@ -7,8 +7,8 @@ export async function GET() {
       select: { category: true, type: true },
     });
 
-    const uniqueCategories = Array.from(new Set(products.map((p) => p.category))).sort();
-    const uniqueTypes = Array.from(new Set(products.map((p) => p.type))).sort();
+    const uniqueCategories = Array.from(new Set(products.map((p: any) => p.category))).sort();
+    const uniqueTypes = Array.from(new Set(products.map((p: any) => p.type))).sort();
 
     return NextResponse.json({
       categories: uniqueCategories,

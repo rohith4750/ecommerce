@@ -23,9 +23,9 @@ export async function POST(req: Request) {
 
     const randNum = Math.floor(100 + Math.random() * 900).toString();
     const slug = `${type.toLowerCase().replace(/\s+/g, "-")}-${category.toLowerCase().replace(/\s+/g, "-")}-${color[0].toLowerCase().replace(/\s+/g, "-")}-${randNum}`;
-    const sku = `SR-${category.substring(0, 3).toUpperCase()}-${type.substring(0, 3).toUpperCase()}-${randNum}`;
+    const sku = `OS-${category.substring(0, 3).toUpperCase()}-${type.substring(0, 3).toUpperCase()}-${randNum}`;
 
-    // Sample default Unsplash saree picture if none provided
+    // Sample default Unsplash picture if none provided
     const sampleImg = "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80";
 
     const product = await db.product.create({
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         name,
         slug,
         sku,
-        description: description || `Handwoven premium ${name} saree. Delicate zari work and rich border drape.`,
+        description: description || `Premium ${name}. Exquisite styling, premium breathable fabric, and fine stitched detailing.`,
         price: parseFloat(price),
         salePrice: salePrice ? parseFloat(salePrice) : null,
         discountPercent: salePrice ? Math.round(((price - salePrice) / price) * 100) : null,
@@ -102,6 +102,47 @@ export async function PATCH(req: Request) {
     console.error("[Update Product Error]", error);
     return NextResponse.json(
       { error: "Internal server error updating product" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("accessToken")?.value;
+    const payload = token ? verifyAccessToken(token) : null;
+
+    if (!payload || payload.role !== Role.ADMIN) {
+      return NextResponse.json({ error: "Forbidden: Admin privileges required" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const productId = searchParams.get("productId");
+    const deleteAll = searchParams.get("deleteAll");
+
+    if (deleteAll === "true") {
+      await db.product.deleteMany({});
+      return NextResponse.json({
+        message: "All products deleted successfully",
+      });
+    }
+
+    if (!productId) {
+      return NextResponse.json({ error: "Product ID is required" }, { status: 400 });
+    }
+
+    await db.product.delete({
+      where: { id: productId },
+    });
+
+    return NextResponse.json({
+      message: "Product deleted successfully",
+    });
+  } catch (error: any) {
+    console.error("[Delete Product Error]", error);
+    return NextResponse.json(
+      { error: "Internal server error deleting product" },
       { status: 500 }
     );
   }

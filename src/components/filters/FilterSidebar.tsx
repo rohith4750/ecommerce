@@ -58,6 +58,10 @@ export default function FilterSidebar() {
     setFilter("color", filters.color === color ? "" : color);
   };
 
+  const handleSizeSelect = (size: string) => {
+    setFilter("size", filters.size === size ? "" : size);
+  };
+
   return (
     <aside className="w-full bg-white rounded-xl border border-brand-primary/5 p-6 shadow-sm sticky top-24">
       {/* Header */}
@@ -121,6 +125,26 @@ export default function FilterSidebar() {
           ))}
           </div>
         )}
+      </div>
+
+      {/* Size Section */}
+      <div className="mb-6">
+        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Size</h4>
+        <div className="flex flex-wrap gap-2">
+          {["XS", "S", "M", "L", "XL", "XXL", "3XL"].map((sz) => (
+            <button
+              key={sz}
+              onClick={() => handleSizeSelect(sz)}
+              className={`min-w-[40px] text-center rounded-lg px-3 py-1.5 text-xs font-medium border transition-all ${
+                filters.size === sz
+                  ? "bg-brand-primary border-brand-primary text-white shadow-sm"
+                  : "bg-white border-gray-200 text-gray-600 hover:border-brand-primary/30"
+              }`}
+            >
+              {sz}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Color Swatch Section */}

@@ -10,14 +10,14 @@ export default function Footer() {
           {/* Brand & Mission Statement */}
           <div className="flex flex-col space-y-4">
             <Link href="/" className="font-serif text-2xl font-bold tracking-wider text-white">
-              SilkRoute
+              OmniStore
             </Link>
             <p className="text-xs text-gray-400 leading-relaxed font-sans">
-              Dedicated to celebrating and preserving India's rich handloom weaving heritage. 
-              We bring premium ethnic wear directly to your doorstep.
+              Your destination for premium global fashion trends. 
+              We bring the best styles directly to your doorstep.
             </p>
             <div className="flex gap-2 text-xs text-gray-400">
-              Made with <Heart className="w-3.5 h-3.5 text-brand-secondary fill-brand-secondary" /> for Indian Artisans
+              Made with <Heart className="w-3.5 h-3.5 text-brand-secondary fill-brand-secondary" /> for Fashion Lovers
             </div>
           </div>
 
@@ -26,23 +26,23 @@ export default function Footer() {
             <h4 className="font-serif text-sm font-semibold tracking-wider text-brand-secondary">Shop Collections</h4>
             <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/products?category=Silk" className="hover:text-white transition-colors">
-                  Pure Banarasi Silks
+                <Link href="/products?category=Ethnic" className="hover:text-white transition-colors">
+                  Trendy Indian Wear
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Silk" className="hover:text-white transition-colors">
-                  Kanjeevaram Wedding Wear
+                <Link href="/products?category=Lehenga" className="hover:text-white transition-colors">
+                  Premium Lehengas
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Cotton" className="hover:text-white transition-colors">
-                  Chanderi & Linen Cottons
+                <Link href="/products?category=Kurtas" className="hover:text-white transition-colors">
+                  Casual Kurtis
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Georgette" className="hover:text-white transition-colors">
-                  Artistic Georgette & Chiffon
+                <Link href="/products?category=Western" className="hover:text-white transition-colors">
+                  Western Designer Wear
                 </Link>
               </li>
             </ul>
@@ -85,11 +85,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-brand-secondary" />
-                <span>support@silkroute.in</span>
+                <span>support@omnistore.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-brand-secondary" />
-                <span>Craft Loom Block, Hyderabad, India</span>
+                <span>Fashion Block, Bangalore, India</span>
               </li>
             </ul>
           </div>
@@ -97,7 +97,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-gray-800 pt-6 text-center text-xs text-gray-500">
-          <p>SilkRoute © 2026 — All Rights Reserved. Empowering regional Indian artisans globally.</p>
+          <p>OmniStore © 2026 — All Rights Reserved. Delivering global fashion trends.</p>
         </div>
       </div>
     </footer>

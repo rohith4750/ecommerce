@@ -115,7 +115,7 @@ export default function AdminDashboardPage() {
           </div>
           <div>
             <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide">Low Stock Warning</p>
-            <h3 className="text-lg font-bold text-brand-dark">{metrics.lowStockCount} Sarees</h3>
+            <h3 className="text-lg font-bold text-brand-dark">{metrics.lowStockCount} Items</h3>
           </div>
         </div>
 
@@ -178,7 +178,7 @@ export default function AdminDashboardPage() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-rose-50 text-rose-800 font-bold border-b border-rose-100">
-                  <th className="p-3">Saree Name</th>
+                  <th className="p-3">Product Name</th>
                   <th className="p-3">SKU</th>
                   <th className="p-3">Remaining Stock</th>
                 </tr>

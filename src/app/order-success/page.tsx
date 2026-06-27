@@ -49,13 +49,13 @@ export default function OrderSuccessPage({ searchParams }: PageProps) {
     doc.setFont("serif", "bold");
     doc.setFontSize(22);
     doc.setTextColor(94, 13, 130); // Brand primary
-    doc.text("SilkRoute", 20, 20);
+    doc.text("OmniStore", 20, 20);
     
     doc.setFont("sans-serif", "normal");
     doc.setFontSize(10);
     doc.setTextColor(110, 110, 110);
-    doc.text("Premium Ethnic Wear E-Commerce Store", 20, 26);
-    doc.text("support@silkroute.in | www.silkroute.in", 20, 31);
+    doc.text("Premium Multi-Channel Fashion Store", 20, 26);
+    doc.text("support@omnistore.com | www.omnistore.com", 20, 31);
     
     // Invoice details
     doc.setFontSize(11);
@@ -142,8 +142,13 @@ export default function OrderSuccessPage({ searchParams }: PageProps) {
     showToast("Invoice downloaded successfully", "success");
   };
 
-  const deliveryEst = new Date();
+  // Fallback to Date + 5 if not in JSON for old orders
+  let deliveryEst = new Date();
   deliveryEst.setDate(deliveryEst.getDate() + 5);
+  
+  if (order?.shippingAddress?.expectedDelivery) {
+    deliveryEst = new Date(order.shippingAddress.expectedDelivery);
+  }
 
   if (loading) {
     return (
@@ -206,12 +211,12 @@ export default function OrderSuccessPage({ searchParams }: PageProps) {
               <div className="relative">
                 <span className="absolute -left-6 top-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-brand-primary" />
                 <p className="text-xs font-semibold text-brand-primary">Order Confirmed</p>
-                <p className="text-[10px] text-gray-400 mt-0.5">Payment verification completed. Weaver stock allocated.</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">Payment verification completed. Product stock allocated.</p>
               </div>
 
               <div className="relative opacity-60">
                 <span className="absolute -left-6 top-1 h-3.5 w-3.5 rounded-full border-2 border-white bg-gray-300" />
-                <p className="text-xs font-semibold text-gray-600">Packing & Loom Check</p>
+                <p className="text-xs font-semibold text-gray-600">Packing & Quality Check</p>
                 <p className="text-[10px] text-gray-400 mt-0.5">Quality inspection and packaging.</p>
               </div>
 
@@ -229,7 +234,7 @@ export default function OrderSuccessPage({ searchParams }: PageProps) {
       {/* support card */}
       <div className="bg-brand-surface/20 rounded-xl border border-brand-primary/10 p-6 flex items-center justify-between">
         <div className="text-xs">
-          <p className="font-semibold text-brand-primary">Need assistance with draping or custom stitching?</p>
+          <p className="font-semibold text-brand-primary">Need assistance with sizing or custom fitting?</p>
           <p className="text-gray-500 mt-0.5">Reach out to our customer care team anytime.</p>
         </div>
         <a

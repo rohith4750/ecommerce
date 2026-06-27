@@ -52,6 +52,29 @@ model User {
   orders       Order[]
   cartItems    CartItem[]
   wishlist     WishlistItem[]
+  addresses    Address[]
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String
+  street    String
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  group     String   // E.g., "CATEGORY" or "TYPE"
+  createdAt DateTime @default(now())
 }
 
 model Product {
@@ -64,10 +87,10 @@ model Product {
   salePrice       Float?
   discountPercent Float?        // Calculated value
   images          String[]      // List of image URLs
-  category        String        // Silk, Cotton, Georgette, etc.
-  type            String        // Banarasi, Kanjeevaram, etc.
+  category        String        // Ethnic, Casual, Western, etc.
+  type            String        // Kurta, Jeans, Dress, etc.
   color           String[]      // Array of colors
-  size            String[]      // Size options (e.g. Free Size, 5.5m)
+  size            String[]      // Size options (e.g. S, M, L, XL)
   gender          String        @default("Women")
   stock           Int
   amazonASIN      String?
@@ -84,7 +107,7 @@ model Product {
 
 model Order {
   id              String        @id @default(uuid())
-  orderId         String        @unique // Format: SR-YYYYMMDD-XXXX
+  orderId         String        @unique // Format: OS-YYYYMMDD-XXXX
   userId          String?
   user            User?         @relation(fields: [userId], references: [id])
   items           Json          // Array of { productId, name, price, qty, image }
@@ -136,8 +159,18 @@ model Discount {
   isActive     Boolean      @default(true)
   startDate    DateTime
   endDate      DateTime
-  category     String?      // Category restriction (e.g. Silk)
+  category     String?      // Category restriction (e.g. Ethnic)
   usageCount   Int          @default(0)
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
+}
+
+model DeliveryZone {
+  id            String   @id @default(uuid())
+  prefix        String   @unique // e.g. "50" or "500001"
+  transitDays   Int      @default(5)
+  codAvailable  Boolean  @default(true)
+  isServiceable Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }

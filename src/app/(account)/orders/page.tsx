@@ -35,13 +35,13 @@ export default function UserOrdersPage() {
     doc.setFont("serif", "bold");
     doc.setFontSize(22);
     doc.setTextColor(94, 13, 130);
-    doc.text("SilkRoute", 20, 20);
+    doc.text("OmniStore", 20, 20);
     
     doc.setFont("sans-serif", "normal");
     doc.setFontSize(10);
     doc.setTextColor(110, 110, 110);
-    doc.text("Premium Saree E-Commerce Store", 20, 26);
-    doc.text("support@silkroute.in | www.silkroute.in", 20, 31);
+    doc.text("Premium Multi-Channel Fashion Store", 20, 26);
+    doc.text("support@omnistore.com | www.omnistore.com", 20, 31);
     
     // Invoice details
     doc.setFontSize(11);
@@ -117,7 +117,7 @@ export default function UserOrdersPage() {
     doc.setFont("sans-serif", "normal");
     doc.setTextColor(150, 150, 150);
     doc.setFontSize(8);
-    doc.text("Thank you for supporting handloom saree weavers. This is a simulated GST e-invoice.", 20, yPos + 45);
+    doc.text("Thank you for your purchase. This is a simulated GST e-invoice.", 20, yPos + 45);
     
     doc.save(`Invoice-${order.orderId}.pdf`);
     showToast("Invoice PDF downloaded", "success");
@@ -146,8 +146,15 @@ export default function UserOrdersPage() {
         <div className="space-y-6">
           {orders.map((order) => {
             const items = order.items as any[];
-            const deliveryEst = new Date(order.createdAt);
+            const address = order.shippingAddress as any;
+            
+            // Fallback to Date + 5 if not in JSON for old orders
+            let deliveryEst = new Date(order.createdAt);
             deliveryEst.setDate(deliveryEst.getDate() + 5);
+            
+            if (address?.expectedDelivery) {
+              deliveryEst = new Date(address.expectedDelivery);
+            }
 
             return (
               <div

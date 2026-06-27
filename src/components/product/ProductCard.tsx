@@ -23,6 +23,8 @@ export interface StoreProduct {
   ratingAverage: number;
   ratingCount: number;
   description: string;
+  amazonASIN?: string | null;
+  flipkartFSN?: string | null;
 }
 
 interface ProductCardProps {

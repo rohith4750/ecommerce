@@ -39,7 +39,11 @@ function LoginForm() {
       if (res.ok) {
         setUser(data.user);
         showToast("Welcome back!", "success");
-        router.push(redirectUrl);
+        if (data.user.role === "ADMIN") {
+          router.push("/admin/dashboard");
+        } else {
+          router.push(redirectUrl);
+        }
       } else if (res.status === 403 && data.status === "VERIFICATION_PENDING") {
         // Redirection trigger: User exists but email is not verified yet
         showToast("Account verification required. OTP sent to email.", "info");
@@ -86,10 +90,9 @@ function LoginForm() {
     <div className="max-w-md mx-auto py-12 animate-fade-in">
       <div className="bg-white rounded-xl border border-brand-primary/5 p-8 shadow-sm space-y-6">
         
-        {/* Section Header */}
         <div className="text-center">
           <Link href="/" className="font-serif text-3xl font-bold tracking-wider text-brand-primary">
-            SilkRoute
+            OmniStore
           </Link>
           <h2 className="mt-4 font-serif text-lg font-semibold text-brand-dark">
             {showOtpScreen ? "Verify Account" : "Access Account"}
@@ -188,8 +191,8 @@ function LoginForm() {
             {/* Admin/User credentials hints */}
             <div className="bg-brand-surface/20 border border-brand-primary/5 rounded-lg p-3 text-[10px] space-y-1 text-brand-primary/80">
               <p className="font-bold">Sample Logins (For Testing):</p>
-              <p>• Customer: <strong>customer@silkroute.in</strong> / <strong>Customer@123</strong></p>
-              <p>• Admin Panel: <strong>admin@silkroute.in</strong> / <strong>Admin@123</strong></p>
+              <p>• Customer: <strong>customer@omnistore.com</strong> / <strong>Customer@123</strong></p>
+              <p>• Admin Panel: <strong>admin@omnistore.com</strong> / <strong>Admin@123</strong></p>
             </div>
 
             <div className="pt-4 text-center border-t border-gray-100">

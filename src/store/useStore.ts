@@ -29,6 +29,7 @@ export interface FiltersState {
   category: string;
   type: string;
   color: string;
+  size: string;
   minPrice: number;
   maxPrice: number;
   searchQuery: string;
@@ -69,6 +70,7 @@ const initialFilters: FiltersState = {
   category: "",
   type: "",
   color: "",
+  size: "",
   minPrice: 0,
   maxPrice: 20000,
   searchQuery: "",

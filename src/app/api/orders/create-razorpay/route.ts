@@ -31,10 +31,10 @@ export async function POST(req: Request) {
       }
     }
 
-    // Generate Unique formatted order ID: SR-YYYYMMDD-XXXX
+    // Generate Unique formatted order ID: OS-YYYYMMDD-XXXX
     const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     const randSuffix = Math.floor(1000 + Math.random() * 9000).toString();
-    const orderId = `SR-${dateStr}-${randSuffix}`;
+    const orderId = `OS-${dateStr}-${randSuffix}`;
 
     // Simulated Razorpay Order ID
     const rzpOrderId = `rzp_order_${Math.random().toString(36).substring(2, 14)}`;

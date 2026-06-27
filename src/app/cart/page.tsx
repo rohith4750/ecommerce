@@ -66,7 +66,7 @@ export default function CartPage() {
         <ShoppingCart className="w-12 h-12 text-brand-primary/30 mx-auto mb-4" />
         <h2 className="font-serif text-xl font-semibold text-brand-dark">Your Bag is Empty</h2>
         <p className="text-xs text-gray-400 mt-2 max-w-sm mx-auto leading-relaxed">
-          It looks like you haven't added any luxury sarees to your shopping bag yet. Explore our handwoven collections.
+          It looks like you haven't added any luxury items to your shopping bag yet. Explore our premium collections.
         </p>
         <Link
           href="/products"

@@ -14,6 +14,10 @@ import {
   BadgeAlert,
   Loader2,
   Shirt,
+  MapPin,
+  CheckCircle2,
+  XCircle,
+  Navigation,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -30,6 +34,66 @@ export default function ProductDetailPage({ params }: PageProps) {
   const [selectedImage, setSelectedImage] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [showSizeGuide, setShowSizeGuide] = useState(false);
+  
+  // Delivery State
+  const [pincode, setPincode] = useState("");
+  const [deliveryInfo, setDeliveryInfo] = useState<any>(null);
+  const [isCheckingDelivery, setIsCheckingDelivery] = useState(false);
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleAutoLocate = () => {
+    if (!navigator.geolocation) {
+      showToast("Geolocation is not supported by your browser.", "error");
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await res.json();
+          if (data && data.address && data.address.postcode) {
+            setPincode(data.address.postcode);
+            showToast("Pincode detected!", "success");
+          } else {
+            showToast("Could not detect pincode for your location.", "error");
+          }
+        } catch (error) {
+          showToast("Failed to fetch location details.", "error");
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      () => {
+        setIsLocating(false);
+        showToast("Location access denied.", "error");
+      }
+    );
+  };
+
+  const checkDelivery = async () => {
+    if (pincode.length !== 6) {
+      showToast("Please enter a valid 6-digit pincode.", "error");
+      return;
+    }
+    setIsCheckingDelivery(true);
+    setDeliveryInfo(null);
+    try {
+      const res = await fetch(`/api/delivery/check?pincode=${pincode}`);
+      const data = await res.json();
+      if (res.ok) {
+        setDeliveryInfo(data);
+      } else {
+        showToast(data.error || "Failed to check delivery", "error");
+      }
+    } catch (err) {
+      showToast("Something went wrong", "error");
+    } finally {
+      setIsCheckingDelivery(false);
+    }
+  };
 
   // Load product details
   useEffect(() => {
@@ -123,18 +187,18 @@ export default function ProductDetailPage({ params }: PageProps) {
   };
 
   const handleWhatsAppShare = () => {
-    const text = `Check out this gorgeous ${product.name} at SilkRoute: ${window.location.origin}/products/${product.slug}`;
+    const text = `Check out this gorgeous ${product.name} at OmniStore: ${window.location.origin}/products/${product.slug}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, "_blank");
   };
 
   return (
-    <div className="bg-white rounded-xl border border-brand-primary/5 p-6 md:p-10 shadow-sm animate-fade-in">
-      <div className="flex flex-col lg:flex-row gap-12">
+    <div className="bg-white rounded-xl border border-brand-primary/5 p-4 sm:p-6 md:p-10 shadow-sm animate-fade-in">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
         
         {/* Images Columns */}
         <div className="w-full lg:w-1/2 flex flex-col md:flex-row gap-4">
           {/* Vertical thumbnails */}
-          <div className="flex md:flex-col gap-2 order-2 md:order-1">
+          <div className="flex md:flex-col gap-2 order-2 md:order-1 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
             {product.images.map((img, idx) => (
               <button
                 key={idx}
@@ -211,12 +275,12 @@ export default function ProductDetailPage({ params }: PageProps) {
             {/* Size Selector Guide */}
             <div className="mt-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold uppercase text-gray-400">Length / Size</span>
+                <span className="text-xs font-bold uppercase text-gray-400">Size Options</span>
                 <button
                   onClick={() => setShowSizeGuide(true)}
                   className="text-xs font-semibold text-brand-primary hover:underline"
                 >
-                  Size & Drape Guide
+                  Size & Product Guide
                 </button>
               </div>
               <span className="inline-block rounded-lg border border-brand-primary/10 bg-brand-surface/20 px-3.5 py-2 text-xs font-medium text-brand-primary">
@@ -239,6 +303,93 @@ export default function ProductDetailPage({ params }: PageProps) {
               )}
             </div>
           </div>
+
+            {/* Marketplace Links */}
+            {(product.amazonASIN || product.flipkartFSN) && (
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest w-full">Also Available On</span>
+                {product.amazonASIN && (
+                  <a
+                    href={`https://www.amazon.in/dp/${product.amazonASIN}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 rounded-lg border border-[#FF9900]/30 bg-[#FF9900]/5 px-4 py-2 text-xs font-bold text-brand-dark hover:bg-[#FF9900]/10 transition-colors"
+                  >
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" className="h-4" />
+                  </a>
+                )}
+                {product.flipkartFSN && (
+                  <a
+                    href={`https://www.flipkart.com/search?q=${product.flipkartFSN}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 rounded-lg border-[#2874F0]/30 bg-[#2874F0]/5 border px-4 py-2 text-xs font-bold text-[#2874F0] hover:bg-[#2874F0]/10 transition-colors"
+                  >
+                    <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/flipkart-plus_8d85f4.png" alt="Flipkart" className="h-4" />
+                  </a>
+                )}
+              </div>
+            )}
+
+            {/* Delivery & Services Check */}
+            <div className="mt-6 border border-gray-100 rounded-lg p-4 bg-gray-50/50">
+              <h4 className="text-sm font-bold text-brand-dark mb-3 flex items-center justify-between gap-2">
+                <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-brand-primary" /> Delivery Options</span>
+                <button 
+                  onClick={handleAutoLocate} 
+                  disabled={isLocating}
+                  className="text-xs font-semibold text-brand-primary flex items-center gap-1 hover:underline disabled:opacity-50 disabled:no-underline"
+                >
+                  {isLocating ? <Loader2 className="w-3 h-3 animate-spin" /> : <Navigation className="w-3 h-3" />}
+                  Auto Locate
+                </button>
+              </h4>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  maxLength={6}
+                  placeholder="Enter 6-digit Pincode"
+                  value={pincode}
+                  onChange={(e) => setPincode(e.target.value.replace(/\D/g, ""))}
+                  className="flex-1 text-sm border-gray-200 rounded-md focus:border-brand-primary focus:ring-brand-primary h-10 px-3"
+                />
+                <button
+                  onClick={checkDelivery}
+                  disabled={isCheckingDelivery || pincode.length !== 6}
+                  className="bg-brand-primary text-white px-4 rounded-md text-xs font-bold disabled:opacity-50 transition-colors hover:bg-brand-primary/90 h-10 flex items-center justify-center min-w-[80px]"
+                >
+                  {isCheckingDelivery ? <Loader2 className="w-4 h-4 animate-spin" /> : "Check"}
+                </button>
+              </div>
+
+              {deliveryInfo && (
+                <div className="mt-4 text-sm bg-white p-3 border border-gray-100 rounded-md shadow-sm">
+                  {deliveryInfo.serviceable ? (
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 text-success">
+                        <CheckCircle2 className="w-4 h-4 mt-0.5" />
+                        <div>
+                          <p className="font-semibold text-brand-dark">Get it by {new Date(deliveryInfo.expectedDelivery).toLocaleDateString('en-IN', { weekday: 'long', month: 'short', day: 'numeric' })}</p>
+                          <p className="text-xs text-gray-500">Standard Delivery ({deliveryInfo.transitDays} Days)</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-600 text-xs">
+                        {deliveryInfo.codAvailable ? (
+                          <><CheckCircle2 className="w-3 h-3 text-success" /> Cash on Delivery available</>
+                        ) : (
+                          <><XCircle className="w-3 h-3 text-danger" /> Cash on Delivery not available</>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-start gap-2 text-danger">
+                      <XCircle className="w-4 h-4 mt-0.5" />
+                      <p className="text-xs">{deliveryInfo.message}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
           {/* Action CTAs */}
           <div className="mt-8 pt-6 border-t border-gray-100">
@@ -274,22 +425,24 @@ export default function ProductDetailPage({ params }: PageProps) {
                 Add to Shopping Bag
               </button>
 
-              {/* Wishlist */}
-              <button
-                onClick={handleWishlistToggle}
-                className="flex items-center justify-center border border-brand-primary/20 hover:border-rose-600 hover:bg-rose-50/50 rounded-lg p-3 text-gray-600 hover:text-rose-600 transition-all h-12 w-full sm:w-auto"
-              >
-                <Heart className={`w-5 h-5 ${isWishlisted ? "fill-rose-600 text-rose-600" : ""}`} />
-              </button>
+              <div className="flex gap-4 w-full sm:w-auto">
+                {/* Wishlist */}
+                <button
+                  onClick={handleWishlistToggle}
+                  className="flex-1 sm:flex-none flex items-center justify-center border border-brand-primary/20 hover:border-rose-600 hover:bg-rose-50/50 rounded-lg p-3 text-gray-600 hover:text-rose-600 transition-all h-12 w-auto"
+                >
+                  <Heart className={`w-5 h-5 ${isWishlisted ? "fill-rose-600 text-rose-600" : ""}`} />
+                </button>
 
-              {/* WhatsApp Share */}
-              <button
-                onClick={handleWhatsAppShare}
-                className="flex items-center justify-center border border-brand-primary/20 hover:bg-brand-surface/20 rounded-lg p-3 text-brand-primary transition-all h-12 w-full sm:w-auto"
-                title="Share on WhatsApp"
-              >
-                <Share2 className="w-5 h-5" />
-              </button>
+                {/* WhatsApp Share */}
+                <button
+                  onClick={handleWhatsAppShare}
+                  className="flex-1 sm:flex-none flex items-center justify-center border border-brand-primary/20 hover:bg-brand-surface/20 rounded-lg p-3 text-brand-primary transition-all h-12 w-auto"
+                  title="Share on WhatsApp"
+                >
+                  <Share2 className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
 

@@ -1,12 +1,22 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useStore } from "@/store/useStore";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 
 export default function StoreLayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useStore();
   const isAdminRoute = pathname?.startsWith("/admin");
+
+  useEffect(() => {
+    if (user?.role === "ADMIN" && !isAdminRoute) {
+      router.replace("/admin/dashboard");
+    }
+  }, [user, isAdminRoute, router]);
 
   if (isAdminRoute) {
     return (

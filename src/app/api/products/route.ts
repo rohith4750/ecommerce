@@ -35,7 +35,7 @@ export async function GET(req: Request) {
     }
 
     if (color) {
-      // Saree colors are stored as an array of strings in PostgreSQL
+      // Product colors are stored as an array of strings in PostgreSQL
       // Check if the color array has intersection or contains it
       where.color = { hasSome: color.split(",") };
     }

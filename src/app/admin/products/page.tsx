@@ -12,6 +12,7 @@ import {
   Layers,
   ArrowRight,
   TrendingDown,
+  Trash2,
 } from "lucide-react";
 
 export default function AdminProductsPage() {
@@ -19,16 +20,19 @@ export default function AdminProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Dynamic Categories State
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+
   // New product form fields
   const [form, setForm] = useState({
     name: "",
-    category: "Silk",
-    type: "Banarasi",
+    category: "",
+    type: "",
     price: "",
     salePrice: "",
     stock: "10",
-    color: "Royal Red",
-    size: "Free Size (5.5m + 0.8m Blouse)",
+    color: "Midnight Blue",
+    size: "M",
     description: "",
     amazonASIN: "",
     flipkartFSN: "",
@@ -42,6 +46,19 @@ export default function AdminProductsPage() {
   const [syncingAmazon, setSyncingAmazon] = useState(false);
   const [syncingFlipkart, setSyncingFlipkart] = useState(false);
   const [syncLogs, setSyncLogs] = useState<string[]>([]);
+
+  // Load all taxonomies
+  async function loadCategories() {
+    try {
+      const res = await fetch("/api/admin/categories");
+      if (res.ok) {
+        const data = await res.json();
+        setDbCategories(data.categories || []);
+      }
+    } catch (err) {
+      console.error("Failed to load categories", err);
+    }
+  }
 
   // Load all products
   async function loadProducts() {
@@ -59,6 +76,7 @@ export default function AdminProductsPage() {
   }
 
   useEffect(() => {
+    loadCategories();
     loadProducts();
   }, []);
 
@@ -89,13 +107,13 @@ export default function AdminProductsPage() {
         showToast("Product created successfully!", "success");
         setForm({
           name: "",
-          category: "Silk",
-          type: "Banarasi",
+          category: "",
+          type: "",
           price: "",
           salePrice: "",
           stock: "10",
-          color: "Royal Red",
-          size: "Free Size (5.5m + 0.8m Blouse)",
+          color: "Midnight Blue",
+          size: "M",
           description: "",
           amazonASIN: "",
           flipkartFSN: "",
@@ -129,6 +147,48 @@ export default function AdminProductsPage() {
       }
     } catch (err) {
       showToast("Failed to update stock", "error");
+    }
+  };
+
+  // Delete product
+  const handleDeleteProduct = async (productId: string) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      const res = await fetch(`/api/admin/products?productId=${productId}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast("Product deleted successfully!", "success");
+        loadProducts();
+      } else {
+        showToast(data.error || "Failed to delete product", "error");
+      }
+    } catch (err) {
+      showToast("Error deleting product", "error");
+    }
+  };
+
+  // Delete all products
+  const handleDeleteAllProducts = async () => {
+    if (!confirm("WARNING: Are you sure you want to delete ALL products in the catalog? This action is irreversible.")) return;
+
+    try {
+      const res = await fetch("/api/admin/products?deleteAll=true", {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showToast("All products deleted successfully!", "success");
+        loadProducts();
+      } else {
+        showToast(data.error || "Failed to delete products", "error");
+      }
+    } catch (err) {
+      showToast("Error deleting products", "error");
     }
   };
 
@@ -197,6 +257,13 @@ export default function AdminProductsPage() {
             <FileSpreadsheet className="w-4 h-4" />
             Bulk CSV Update
           </button>
+          <button
+            onClick={handleDeleteAllProducts}
+            className="flex items-center gap-1.5 rounded-lg border border-rose-200 hover:bg-rose-50 text-rose-600 text-xs font-semibold px-4 py-2 transition-all cursor-pointer shadow-sm"
+          >
+            <Trash2 className="w-4 h-4 animate-pulse" />
+            Delete All
+          </button>
         </div>
       </div>
 
@@ -262,26 +329,21 @@ export default function AdminProductsPage() {
               />
             </div>
             <div>
-              <label className="block text-gray-400 font-bold mb-1">Fabric Category</label>
+              <label className="block text-gray-400 font-bold mb-1">Category</label>
               <select name="category" value={form.category} onChange={handleFormChange} className="w-full rounded border px-3 py-1.5">
-                <option value="Silk">Silk</option>
-                <option value="Cotton">Cotton</option>
-                <option value="Georgette">Georgette</option>
-                <option value="Chiffon">Chiffon</option>
-                <option value="Organza">Organza</option>
-                <option value="Crepe">Crepe</option>
+                <option value="">Select Category</option>
+                {dbCategories.filter(c => c.group === "CATEGORY").map(c => (
+                  <option key={c.id} value={c.name}>{c.name}</option>
+                ))}
               </select>
             </div>
             <div>
-              <label className="block text-gray-400 font-bold mb-1">Weave / Craft Type</label>
+              <label className="block text-gray-400 font-bold mb-1">Craft / Type</label>
               <select name="type" value={form.type} onChange={handleFormChange} className="w-full rounded border px-3 py-1.5">
-                <option value="Banarasi">Banarasi</option>
-                <option value="Kanjeevaram">Kanjeevaram</option>
-                <option value="Chanderi">Chanderi</option>
-                <option value="Bandhani">Bandhani</option>
-                <option value="Patola">Patola</option>
-                <option value="Mysore Silk">Mysore Silk</option>
-                <option value="Sambalpuri">Sambalpuri</option>
+                <option value="">Select Type</option>
+                {dbCategories.filter(c => c.group === "TYPE").map(c => (
+                  <option key={c.id} value={c.name}>{c.name}</option>
+                ))}
               </select>
             </div>
             <div>
@@ -327,6 +389,22 @@ export default function AdminProductsPage() {
               />
             </div>
             <div>
+              <label className="block text-gray-400 font-bold mb-1">Product Size</label>
+              <select
+                name="size"
+                value={form.size}
+                onChange={handleFormChange}
+                className="w-full rounded border px-3 py-1.5 bg-white"
+              >
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+                <option value="Free Size">Free Size</option>
+              </select>
+            </div>
+            <div>
               <label className="block text-gray-400 font-bold mb-1">Amazon ASIN (Sync ID, Optional)</label>
               <input
                 type="text"
@@ -349,7 +427,7 @@ export default function AdminProductsPage() {
               />
             </div>
             <div className="sm:col-span-3">
-              <label className="block text-gray-400 font-bold mb-1">Weaving Description</label>
+              <label className="block text-gray-400 font-bold mb-1">Product Description</label>
               <textarea
                 name="description"
                 value={form.description}
@@ -397,6 +475,7 @@ export default function AdminProductsPage() {
                   <th className="p-4">Price (MRP)</th>
                   <th className="p-4">Sync Channels</th>
                   <th className="p-4 text-center">Warehouse Stock</th>
+                  <th className="p-4 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -433,6 +512,15 @@ export default function AdminProductsPage() {
                             +
                           </button>
                         </div>
+                      </td>
+                      <td className="p-4 text-center">
+                        <button
+                          onClick={() => handleDeleteProduct(p.id)}
+                          className="text-gray-400 hover:text-rose-600 transition-colors p-1"
+                          title="Delete Product"
+                        >
+                          <Trash2 className="w-4 h-4 inline" />
+                        </button>
                       </td>
                     </tr>
                   );

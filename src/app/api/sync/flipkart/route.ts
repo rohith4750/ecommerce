@@ -14,8 +14,8 @@ export async function POST() {
       return NextResponse.json({ error: "Forbidden: Admin access required" }, { status: 403 });
     }
 
-    // Load sarees configured for Flipkart selling (possessing a FSN identifier)
-    const fkSarees = await db.product.findMany({
+    // Load products configured for Flipkart selling (possessing a FSN identifier)
+    const fkProducts = await db.product.findMany({
       where: { flipkartFSN: { not: null } },
       select: { id: true, name: true, sku: true, stock: true, flipkartFSN: true, price: true },
     });
@@ -25,26 +25,26 @@ export async function POST() {
     logs.push(`[${new Date().toISOString()}] Session established. API Key authorized.`);
     logs.push(`[${new Date().toISOString()}] Connecting to Flipkart Seller Hub endpoints...`);
 
-    const syncResults = fkSarees.map((saree: any) => {
+    const syncResults = fkProducts.map((product: any) => {
       logs.push(
-        `[${new Date().toISOString()}] Synced SKU: ${saree.sku} | FSN: ${saree.flipkartFSN} | Stock: ${
-          saree.stock
-        } units | Price: ₹${saree.price}`
+        `[${new Date().toISOString()}] Synced SKU: ${product.sku} | FSN: ${product.flipkartFSN} | Stock: ${
+          product.stock
+        } units | Price: ₹${product.price}`
       );
       return {
-        sku: saree.sku,
-        fsn: saree.flipkartFSN,
-        stock: saree.stock,
-        price: saree.price,
+        sku: product.sku,
+        fsn: product.flipkartFSN,
+        stock: product.stock,
+        price: product.price,
         status: "SUCCESS",
       };
     });
 
-    logs.push(`[${new Date().toISOString()}] Sync finished. Processed ${fkSarees.length} Flipkart listings.`);
+    logs.push(`[${new Date().toISOString()}] Sync finished. Processed ${fkProducts.length} Flipkart listings.`);
 
     return NextResponse.json({
       message: "Flipkart Seller Hub stock sync completed",
-      syncCount: fkSarees.length,
+      syncCount: fkProducts.length,
       results: syncResults,
       logs,
     });

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || "fallback-access-secret-key-silkroute";
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "fallback-refresh-secret-key-silkroute";
+const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || "fallback-access-secret-key-omnistore";
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "fallback-refresh-secret-key-omnistore";
 
 export interface TokenPayload {
   userId: string;

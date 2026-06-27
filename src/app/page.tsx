@@ -9,30 +9,30 @@ export const revalidate = 60; // Revalidate page every 60 seconds (ISR)
 
 const categoriesList = [
   {
-    name: "Pure Silk Looms",
-    category: "Silk",
-    desc: "Luxury Banarasi, Kanjeevaram & Patolas.",
+    name: "Ethnic Couture",
+    category: "Ethnic",
+    desc: "Designer Lehengas, Anarkalis & Kurtis.",
     bg: "bg-[#F3E8FF] border-[#E0CBE9]",
     image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=400&auto=format&fit=crop&q=80",
   },
   {
-    name: "Linen & Cottons",
-    category: "Cotton",
-    desc: "Handloomed cotton & linen drapes.",
+    name: "Casual Wardrobe",
+    category: "Casual",
+    desc: "Lightweight cottons, denims & everyday wear.",
     bg: "bg-[#FFFbeb] border-[#fde68a]",
     image: "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=400&auto=format&fit=crop&q=80",
   },
   {
-    name: "Chiffon & Crepes",
-    category: "Chiffon",
-    desc: "Lightweight styles for modern parties.",
+    name: "Western Trends",
+    category: "Western",
+    desc: "Contemporary dresses, tops & designer fits.",
     bg: "bg-[#ECFDF5] border-[#a7f3d0]",
     image: "https://images.unsplash.com/photo-1610030469668-93535c17b6b3?w=400&auto=format&fit=crop&q=80",
   },
   {
-    name: "Organza & Nets",
-    category: "Organza",
-    desc: "Sheer, crisp designs with intricate embroidery.",
+    name: "Athleisure & Lounge",
+    category: "Activewear",
+    desc: "Comfortable activewear, sets & loungewear.",
     bg: "bg-[#EFF6FF] border-[#bfdbfe]",
     image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400&auto=format&fit=crop&q=80",
   },
@@ -59,23 +59,23 @@ export default async function HomePage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 bg-white border border-brand-primary/5 rounded-2xl p-6 shadow-sm text-center">
         <div className="flex flex-col items-center">
           <Award className="w-8 h-8 text-brand-secondary mb-2" />
-          <h4 className="font-serif text-sm font-semibold text-brand-dark">100% Pure Silks</h4>
-          <p className="text-[10px] text-gray-400 mt-1">Silk Mark certified authentic weavers.</p>
+          <h4 className="font-serif text-sm font-semibold text-brand-dark">100% Quality Assurance</h4>
+          <p className="text-[10px] text-gray-400 mt-1">Carefully curated high-grade fabrics.</p>
         </div>
         <div className="flex flex-col items-center border-t border-gray-100 pt-4 md:border-t-0 md:pt-0 md:border-l md:border-gray-100">
           <Sparkles className="w-8 h-8 text-brand-secondary mb-2" />
-          <h4 className="font-serif text-sm font-semibold text-brand-dark">Artisanal Heritage</h4>
-          <p className="text-[10px] text-gray-400 mt-1">Direct support to regional weaver groups.</p>
+          <h4 className="font-serif text-sm font-semibold text-brand-dark">Global Trends</h4>
+          <p className="text-[10px] text-gray-400 mt-1">Bringing you the latest seasonal designs.</p>
         </div>
         <div className="flex flex-col items-center border-t border-gray-100 pt-4 md:border-t-0 md:pt-0 md:border-l md:border-gray-100">
           <ShieldCheck className="w-8 h-8 text-brand-secondary mb-2" />
           <h4 className="font-serif text-sm font-semibold text-brand-dark">Secure Checkout</h4>
-          <p className="text-[10px] text-gray-400 mt-1">Razorpay secure gateway transaction.</p>
+          <p className="text-[10px] text-gray-400 mt-1">Encrypted transactions & payments.</p>
         </div>
         <div className="flex flex-col items-center border-t border-gray-100 pt-4 md:border-t-0 md:pt-0 md:border-l md:border-gray-100">
           <HeartHandshake className="w-8 h-8 text-brand-secondary mb-2" />
-          <h4 className="font-serif text-sm font-semibold text-brand-dark">Easy Drape Exchanges</h4>
-          <p className="text-[10px] text-gray-400 mt-1">No-hassle returns and quick swaps.</p>
+          <h4 className="font-serif text-sm font-semibold text-brand-dark">Easy Swaps</h4>
+          <p className="text-[10px] text-gray-400 mt-1">No-hassle 10-day returns and exchanges.</p>
         </div>
       </div>
 
@@ -83,9 +83,9 @@ export default async function HomePage() {
       <div>
         <div className="text-center mb-8">
           <h3 className="font-serif text-2xl md:text-3xl font-bold tracking-wide text-brand-dark">
-            Explore Fabrics
+            Shop by Style
           </h3>
-          <p className="text-xs text-gray-400 mt-1.5">Shop collections curated by signature regional aesthetics</p>
+          <p className="text-xs text-gray-400 mt-1.5">Shop curation of global designer collections</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categoriesList.map((cat, idx) => (
@@ -121,9 +121,9 @@ export default async function HomePage() {
         <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
           <div>
             <h3 className="font-serif text-xl font-semibold tracking-wide text-brand-dark">
-              Festive Masterpieces
+              Trending Now
             </h3>
-            <p className="text-xs text-gray-400 mt-0.5">Top trending ethnic wear this week</p>
+            <p className="text-xs text-gray-400 mt-0.5">Curated fashion essentials handpicked for you</p>
           </div>
           <Link
             href="/products"

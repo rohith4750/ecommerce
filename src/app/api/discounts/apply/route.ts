@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       // Wait, let's also allow product lookup from db if item category is missing
       if (!hasRestrictedCategory) {
         return NextResponse.json(
-          { error: `This coupon is only applicable on ${discount.category} sarees.` },
+          { error: `This coupon is only applicable on ${discount.category} products.` },
           { status: 400 }
         );
       }

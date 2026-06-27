@@ -14,8 +14,8 @@ export async function POST() {
       return NextResponse.json({ error: "Forbidden: Admin access required" }, { status: 403 });
     }
 
-    // Load sarees configured for Amazon selling (possessing an ASIN identifier)
-    const amzSarees = await db.product.findMany({
+    // Load products configured for Amazon selling (possessing an ASIN identifier)
+    const amzProducts = await db.product.findMany({
       where: { amazonASIN: { not: null } },
       select: { id: true, name: true, sku: true, stock: true, amazonASIN: true, price: true },
     });
@@ -25,26 +25,26 @@ export async function POST() {
     logs.push(`[${new Date().toISOString()}] Access Token generated successfully. Expires in 3600s.`);
     logs.push(`[${new Date().toISOString()}] Connecting to Amazon India Marketplace A21TJRUUN4KGV...`);
 
-    const syncResults = amzSarees.map((saree) => {
+    const syncResults = amzProducts.map((product: any) => {
       logs.push(
-        `[${new Date().toISOString()}] Synced SKU: ${saree.sku} | ASIN: ${saree.amazonASIN} | Stock: ${
-          saree.stock
-        } units | Price: ₹${saree.price}`
+        `[${new Date().toISOString()}] Synced SKU: ${product.sku} | ASIN: ${product.amazonASIN} | Stock: ${
+          product.stock
+        } units | Price: ₹${product.price}`
       );
       return {
-        sku: saree.sku,
-        asin: saree.amazonASIN,
-        stock: saree.stock,
-        price: saree.price,
+        sku: product.sku,
+        asin: product.amazonASIN,
+        stock: product.stock,
+        price: product.price,
         status: "SUCCESS",
       };
     });
 
-    logs.push(`[${new Date().toISOString()}] Sync finished. Processed ${amzSarees.length} listings.`);
+    logs.push(`[${new Date().toISOString()}] Sync finished. Processed ${amzProducts.length} listings.`);
 
     return NextResponse.json({
       message: "Amazon SP-API catalog stock sync completed",
-      syncCount: amzSarees.length,
+      syncCount: amzProducts.length,
       results: syncResults,
       logs,
     });

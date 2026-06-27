@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     // Send simulated email
     await sendEmail({
       to: email,
-      subject: "Verify your SilkRoute account",
+      subject: "Verify your OmniStore account",
       html: getWelcomeTemplate(name, otpCode),
     });
 

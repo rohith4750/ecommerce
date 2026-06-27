@@ -17,10 +17,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "SilkRoute | Premium Ethnic Wear E-Commerce Store",
+  title: "OmniStore | Multi-Channel Fashion E-Commerce Platform",
   description:
-    "Explore SilkRoute's curated collection of premium ethnic wear, including kurtas, lehengas, and punjabi dresses. Luxury meets heritage. Delivered worldwide.",
-  keywords: "ethnic wear, kurtas, lehengas, punjabi dresses, designer ethnic wear, indian traditional wear",
+    "Explore OmniStore's curated collection of premium fashion, including kurtas, lehengas, western dresses, and contemporary styles. Managed seamlessly across multiple channels.",
+  keywords: "fashion, ethnic wear, western wear, casual wear, kurtas, lehengas, designer wear, omnistore",
 };
 
 export default function RootLayout({

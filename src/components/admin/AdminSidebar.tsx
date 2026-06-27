@@ -10,6 +10,8 @@ import {
   Ticket,
   LogOut,
   ShoppingBasket,
+  Layers,
+  Truck,
 } from "lucide-react";
 
 export default function AdminSidebar() {
@@ -37,6 +39,11 @@ export default function AdminSidebar() {
       icon: <LayoutDashboard className="w-4 h-4" />,
     },
     {
+      name: "Taxonomies",
+      href: "/admin/categories",
+      icon: <Layers className="w-4 h-4" />,
+    },
+    {
       name: "Products Hub",
       href: "/admin/products",
       icon: <ShoppingBag className="w-4 h-4" />,
@@ -51,16 +58,21 @@ export default function AdminSidebar() {
       href: "/admin/discounts",
       icon: <Ticket className="w-4 h-4" />,
     },
+    {
+      name: "Delivery Zones",
+      href: "/admin/delivery",
+      icon: <Truck className="w-4 h-4" />,
+    },
   ];
 
   return (
-    <aside className="w-full md:w-64 bg-[#1A1A2E] text-gray-300 rounded-xl border border-brand-primary/5 p-6 shrink-0 flex flex-col justify-between min-h-[300px] md:min-h-[500px]">
+    <aside className="w-full h-full bg-[#1A1A2E] text-gray-300 p-6 flex flex-col justify-between">
       <div className="space-y-6">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest text-brand-secondary">
             Management Panel
           </span>
-          <h2 className="font-serif text-lg font-bold text-white mt-1">SilkRoute Office</h2>
+          <h2 className="font-serif text-lg font-bold text-white mt-1">OmniStore Admin</h2>
         </div>
 
         {/* Links Navigation */}

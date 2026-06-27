@@ -18,8 +18,8 @@ async function main() {
 
   const admin = await prisma.user.create({
     data: {
-      name: "SilkRoute Admin",
-      email: "admin@silkroute.in",
+      name: "OmniStore Admin",
+      email: "admin@omnistore.com",
       passwordHash: adminPasswordHash,
       role: Role.ADMIN,
     },
@@ -28,7 +28,7 @@ async function main() {
   const customer = await prisma.user.create({
     data: {
       name: "Rohith Palagummi",
-      email: "customer@silkroute.in",
+      email: "customer@omnistore.com",
       passwordHash: customerPasswordHash,
       role: Role.USER,
     },
@@ -47,7 +47,7 @@ async function main() {
       isActive: true,
       startDate: new Date(),
       endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-      category: "Silk",
+      category: "Ethnic",
     },
     {
       code: "GOLDEN1000",
@@ -73,9 +73,9 @@ async function main() {
     await prisma.discount.create({ data: d });
   }
 
-  console.log("Creating 50 sample saree products...");
+  console.log("Creating 50 sample fashion products...");
 
-  const sareeImages = [
+  const fashionImages = [
     "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?w=800&auto=format&fit=crop&q=80",
     "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=800&auto=format&fit=crop&q=80",
@@ -84,12 +84,12 @@ async function main() {
     "https://images.unsplash.com/photo-1610030470204-7117e33e5c9b?w=800&auto=format&fit=crop&q=80"
   ];
 
-  const categories = ["Silk", "Cotton", "Georgette", "Chiffon", "Organza", "Crepe"];
-  const types = ["Banarasi", "Kanjeevaram", "Chanderi", "Bandhani", "Patola", "Mysore Silk", "Sambalpuri"];
-  const colors = ["Royal Red", "Silk Purple", "Golden Yellow", "Emerald Green", "Peacock Blue", "Magenta Pink", "Classic Black", "Ivory Cream"];
-  const sizes = ["Free Size (5.5m + 0.8m Blouse)", "6.3m (With Blouse Piece)", "5.5m (No Blouse)"];
+  const categories = ["Ethnic", "Casual", "Western", "Activewear"];
+  const types = ["Kurta", "Lehenga", "Dress", "T-Shirt", "Jeans", "Jacket", "Activewear Set"];
+  const colors = ["Royal Red", "Midnight Blue", "Crimson Red", "Forest Green", "Amber Yellow", "Lilac Pink", "Classic Black", "Ivory White"];
+  const sizes = ["S", "M", "L", "XL", "XXL"];
   
-  const tags = ["handwoven", "festive", "wedding", "luxury", "artisanal", "traditional", "partywear"];
+  const tags = ["stylish", "festive", "luxury", "artisanal", "contemporary", "modern", "sporty"];
 
   for (let i = 1; i <= 50; i++) {
     const category = categories[i % categories.length];
@@ -97,24 +97,24 @@ async function main() {
     const colorVal = colors[i % colors.length];
     const isFeatured = i <= 6; // First 6 featured on carousel
     
-    const price = Math.round(3500 + Math.random() * 15000);
+    const price = Math.round(1500 + Math.random() * 8000);
     const hasDiscount = Math.random() > 0.4;
     const salePrice = hasDiscount ? Math.round(price * 0.8) : null;
     const discountPercent = salePrice ? 20 : null;
 
     const slug = `${type.toLowerCase().replace(/\s+/g, "-")}-${category.toLowerCase().replace(/\s+/g, "-")}-${colorVal.toLowerCase().replace(/\s+/g, "-")}-${i}`;
-    const sku = `SR-${category.substring(0, 3).toUpperCase()}-${type.substring(0, 3).toUpperCase()}-${i.toString().padStart(3, "0")}`;
+    const sku = `OS-${category.substring(0, 3).toUpperCase()}-${type.substring(0, 3).toUpperCase()}-${i.toString().padStart(3, "0")}`;
 
     // Select primary and secondary image
-    const primaryImg = sareeImages[(i - 1) % sareeImages.length];
-    const secondaryImg = sareeImages[i % sareeImages.length];
+    const primaryImg = fashionImages[(i - 1) % fashionImages.length];
+    const secondaryImg = fashionImages[i % fashionImages.length];
 
     await prisma.product.create({
       data: {
-        name: `Premium ${colorVal} ${type} ${category} Saree`,
+        name: `Premium ${colorVal} ${type} ${category}`,
         slug,
         sku,
-        description: `Experience the grandeur of traditional Indian heritage with this exquisite ${colorVal} ${type} ${category} Saree. Handcrafted by master weavers, it features delicate zari work, intricate border detailing, and a luxurious drape perfect for weddings, festivals, and milestones. Comes with a matching blouse piece.`,
+        description: `Experience the luxury and comfort of our premium ${colorVal} ${type}. Part of our exclusive ${category} collection, this product is designed with modern silhouette lines, premium breathable fabric, and fine hand-stitched detailing, making it ideal for standard wardrobes, celebrations, and everyday comfort.`,
         price,
         salePrice,
         discountPercent,
@@ -123,10 +123,10 @@ async function main() {
         type,
         color: [colorVal],
         size: [sizes[i % sizes.length]],
-        gender: "Women",
+        gender: i % 2 === 0 ? "Women" : "Men",
         stock: Math.round(2 + Math.random() * 18),
-        amazonASIN: i % 3 === 0 ? `B07X${i.toString().padStart(4, "9")}SR` : null,
-        flipkartFSN: i % 4 === 0 ? `SRE${i.toString().padStart(9, "8")}XYZ` : null,
+        amazonASIN: i % 3 === 0 ? `B07X${i.toString().padStart(4, "9")}OS` : null,
+        flipkartFSN: i % 4 === 0 ? `OSD${i.toString().padStart(9, "8")}XYZ` : null,
         isFeatured,
         ratingAverage: Math.round((4.0 + Math.random() * 1.0) * 10) / 10,
         ratingCount: Math.round(5 + Math.random() * 95),
