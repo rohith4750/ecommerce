@@ -43,12 +43,17 @@ export async function POST(req: Request) {
       },
     });
 
-    // Send simulated email
-    await sendEmail({
-      to: email,
-      subject: "Verify your OmniStore account",
-      html: getWelcomeTemplate(name, otpCode),
-    });
+    // Send email (non-blocking — don't let email failure crash registration)
+    try {
+      await sendEmail({
+        to: email,
+        subject: "Verify your OmniStore account",
+        html: getWelcomeTemplate(name, otpCode),
+      });
+    } catch (emailErr) {
+      console.error("[Register Email Error]", emailErr);
+      // Email failed but user was created — continue
+    }
 
     return NextResponse.json({
       message: "Registration successful. Verification OTP sent to email.",
@@ -57,7 +62,7 @@ export async function POST(req: Request) {
   } catch (error: any) {
     console.error("[Register Error]", error);
     return NextResponse.json(
-      { error: "Internal server error during registration" },
+      { error: error?.message || "Internal server error during registration" },
       { status: 500 }
     );
   }
