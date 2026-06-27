@@ -6,7 +6,6 @@ export function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
   const url = request.nextUrl.clone();
-  const isAuthRoute = url.pathname.startsWith("/login") || url.pathname.startsWith("/register");
   const isAdminRoute = url.pathname.startsWith("/admin");
   const isProtectedRoute =
     url.pathname.startsWith("/profile") ||
@@ -14,41 +13,55 @@ export function middleware(request: NextRequest) {
     url.pathname.startsWith("/wishlist") ||
     url.pathname.startsWith("/checkout");
 
-  if (!accessToken && !refreshToken) {
-    if (isProtectedRoute || isAdminRoute) {
-      url.pathname = "/login";
-      url.searchParams.set("redirect", request.nextUrl.pathname);
-      return NextResponse.redirect(url);
-    }
-  } else {
-    // If the user has a session and is trying to access auth pages, redirect to home page
-    if (isAuthRoute) {
-      url.pathname = "/";
-      return NextResponse.redirect(url);
-    }
+  // Check if the token is actually valid (not expired)
+  let isValidSession = false;
+  const token = accessToken || refreshToken || "";
 
-    if (isAdminRoute) {
-      try {
-        const token = accessToken || refreshToken || "";
-        const parts = token.split(".");
-        if (parts.length === 3) {
-          // Edge-safe base64 decoding
-          const payloadPart = parts[1];
-          const decodedPayload = atob(payloadPart.replace(/-/g, "+").replace(/_/g, "/"));
-          const payload = JSON.parse(decodedPayload);
-          
-          if (payload.role !== "ADMIN") {
-            url.pathname = "/";
-            return NextResponse.redirect(url);
-          }
-        } else {
-          url.pathname = "/login";
-          return NextResponse.redirect(url);
+  if (token) {
+    try {
+      const parts = token.split(".");
+      if (parts.length === 3) {
+        const decodedPayload = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
+        const payload = JSON.parse(decodedPayload);
+        if (payload.exp && payload.exp * 1000 > Date.now()) {
+          isValidSession = true;
         }
-      } catch (err) {
-        url.pathname = "/login";
+      }
+    } catch (err) {
+      // Token is malformed
+    }
+  }
+
+  if (!isValidSession) {
+    const response = isProtectedRoute || isAdminRoute
+      ? (() => {
+          url.pathname = "/login";
+          url.searchParams.set("redirect", request.nextUrl.pathname);
+          return NextResponse.redirect(url);
+        })()
+      : NextResponse.next();
+
+    if (token) {
+      response.cookies.delete("accessToken");
+      response.cookies.delete("refreshToken");
+    }
+    return response;
+  }
+
+  // Valid session — check admin role for admin routes
+  if (isAdminRoute) {
+    try {
+      const parts = token.split(".");
+      const decodedPayload = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
+      const payload = JSON.parse(decodedPayload);
+
+      if (payload.role !== "ADMIN") {
+        url.pathname = "/";
         return NextResponse.redirect(url);
       }
+    } catch (err) {
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
     }
   }
 
@@ -62,7 +75,5 @@ export const config = {
     "/orders/:path*",
     "/wishlist/:path*",
     "/checkout/:path*",
-    "/login",
-    "/register",
   ],
 };
