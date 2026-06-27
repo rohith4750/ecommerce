@@ -15,8 +15,10 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
   if (isSmtpConfigured) {
     try {
       const transporter = nodemailer.createTransport({
+        service: "gmail",
         host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || "2525"),
+        port: parseInt(process.env.SMTP_PORT || "587"),
+        secure: false,
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS,
@@ -24,7 +26,7 @@ export async function sendEmail({ to, subject, html }: EmailOptions) {
       });
 
       const info = await transporter.sendMail({
-        from: process.env.EMAIL_FROM || "no-reply@omnistore.com",
+        from: `"OmniStore" <${process.env.SMTP_USER}>`,
         to,
         subject,
         html,
